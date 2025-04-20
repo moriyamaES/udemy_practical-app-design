@@ -114,7 +114,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.BooksScalarFieldEnum = {
+exports.Prisma.BookScalarFieldEnum = {
   id: 'id',
   title: 'title',
   idAvailable: 'idAvailable',
@@ -129,7 +129,7 @@ exports.Prisma.SortOrder = {
 
 
 exports.Prisma.ModelName = {
-  Books: 'Books'
+  Book: 'Book'
 };
 
 /**
