@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Book } from '../generated/prisma';
+import { Book } from "@prisma/client";
 
 export class PrismaBookRepository {
   private prisma: PrismaClient;
@@ -7,6 +7,7 @@ export class PrismaBookRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+
 
   async create(title: string): Promise<Book> {
     return await this.prisma.book.create({

@@ -1,5 +1,5 @@
 import { PrismaBookRepository } from "../dataAccess/prismaBookRepository";
-import { Book } from "../generated/prisma";
+import { Book } from "@prisma/client";
 
 export class BookService {
   private bookRepository: PrismaBookRepository;
