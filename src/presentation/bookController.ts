@@ -19,7 +19,7 @@ export class BookController {
     }
   }
 
-  async finById(req: Request, res: Response): Promise<void> {
+  async findById(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
       const book = await this.bookService.findById(id);
