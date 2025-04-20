@@ -1,1 +1,2 @@
 # udemy_practical-app-design
+- 「レイヤードアーキテクチャによる設計と実装」まで完了
