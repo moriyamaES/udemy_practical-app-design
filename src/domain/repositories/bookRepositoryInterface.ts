@@ -1,6 +1,6 @@
-import { Book } from "@prisma/client";
+import { Book } from "../entities/book";
 
 export interface BookRepositoryInterface {
-  create(title: string): Promise<Book>;
+  create(book: Book): Promise<Book>;
   findById(id: string): Promise<Book | null>;
 }
