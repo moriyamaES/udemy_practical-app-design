@@ -1,5 +1,4 @@
 import inquirer from "inquirer";
-import { listenerCount } from "process";
 
 async function main() {
   const layers = [
