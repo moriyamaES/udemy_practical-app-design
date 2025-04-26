@@ -1,4 +1,29 @@
 import inquirer from "inquirer";
+import path from "path";
+import { generateEntity, generateRepositoryInterface } from "./templates/entityLayer";
+import { lowercaseFirst, writeFile } from "./utils";
+
+
+async function generateEntityLayer() {
+  const { entityName } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'entityName',
+      message: 'エンティティ名を入力してください',
+    },
+  ]);
+  const basePath = path.join(__dirname, '..', 'src', 'domain');
+  const entityContent = generateEntity(entityName);
+  writeFile(
+    path.join(basePath, 'entities', `${lowercaseFirst(entityName)}.ts`),
+    entityContent
+  )
+
+  const RepositoryInterfaceContent = generateRepositoryInterface(entityName);
+  writeFile(
+    path.join(basePath, 'repositories', `${lowercaseFirst(entityName)}RepositoryInterface.ts`), RepositoryInterfaceContent
+  ) 
+}
 
 async function main() {
   const layers = [
@@ -20,7 +45,7 @@ async function main() {
   ])
 
   if (layer === 'Entity'){
-    console.log('Entity')
+    await generateEntityLayer()
   } else if (layer === 'UseCase') {
     console.log('UseCase')
   } else if (layer === 'Interface adapter') {

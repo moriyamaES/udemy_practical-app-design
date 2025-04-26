@@ -22,7 +22,7 @@ export function generateRepositoryInterface(name: string) {
 import { ${capitalize(name)} } from '../entities/${lowercaseFirst(name)}';
 
 export interface ${capitalize(name)}RepositoryInterface {
-  create(${lowercaseFirst(name)}): ${capitalize(name)}): Promise<${capitalize(name)}>;
+  create(${lowercaseFirst(name)}: ${capitalize(name)}): Promise<${capitalize(name)}>;
   findById(id: string): Promise<${capitalize(name)} | null>;
   // Add other methods as needed
 }  
