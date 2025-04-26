@@ -5,6 +5,7 @@ import { PrismaBookRepository } from '../../adapter/repositories/prismaBookRepos
 import { UuidGenerator } from '../../adapter/utils/uuidGenerator';
 import { AddBookUseCase } from '../../application/useCases/book/addBookUseCase';
 import { bookRoutes } from './routers/bookRouters';
+import { FindBookByIdUseCase } from '../../application/useCases/book/findBookByIdUseCase';
 
 const app = express();
 app.use(express.json());
@@ -14,7 +15,8 @@ const uuidGenerator = new UuidGenerator()
 
 const bookRepository = new PrismaBookRepository(prisma)
 const addBookUseCase = new AddBookUseCase(bookRepository, uuidGenerator)
-const bookController = new BookController(addBookUseCase)
+const findBookByIdUseCase = new FindBookByIdUseCase(bookRepository)
+const bookController = new BookController(addBookUseCase, findBookByIdUseCase)
 
 app.use('/books', bookRoutes(bookController))
 
