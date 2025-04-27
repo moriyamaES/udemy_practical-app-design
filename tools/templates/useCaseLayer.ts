@@ -59,7 +59,7 @@ export class ${capitalize(useCaseName)}UseCase implements ${capitalize(
   async execute(requestDto: ${capitalize(
     useCaseName
   )}RequestDto): Promise<${capitalize(useCaseName)}ResponseDto> {
-    // Implement usecase logic
+    // Implement useCase logic
   }
 }
 `;
