@@ -3,6 +3,9 @@ import path from "path";
 import { generateEntity, generateRepositoryInterface } from "./templates/entityLayer";
 import { lowercaseFirst, writeFile } from "./utils";
 import { generateUseCase, generateUseCaseInterface, generateRequestDto, generateResponseDto } from "./templates/useCaseLayer";
+import { generateController, generatePrismaRepository } from "./templates/adapterLayer";
+import { generateRouter } from "./templates/infrastructureLayer";
+import { capitalize } from "./utils";
 
 async function generateEntityLayer() {
   const { entityName } = await inquirer.prompt([
@@ -18,6 +21,16 @@ async function generateEntityLayer() {
     path.join(basePath, 'entities', `${lowercaseFirst(entityName)}.ts`),
     entityContent
   )
+
+  const repositoryInterfaceContent = generateRepositoryInterface(entityName);
+  writeFile(
+    path.join(
+      basePath,
+      'repositories',
+      `${lowercaseFirst(entityName)}RepositoryInterface.ts`
+    ),
+    repositoryInterfaceContent
+  );
 }
 
 async function generateUseCaseLayer() {
@@ -79,6 +92,57 @@ async function generateUseCaseLayer() {
   )
 }
 
+async function generateInterfaceAdapterLayer() {
+  const { entityName, useCaseName } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'entityName',
+      message: 'エンティティ名を入力してください',
+    },
+    {
+      type: 'input',
+      name: 'useCaseName',
+      message: 'ユースケース名を入力してください',
+    },
+  ]);
+  const basePath = path.join(__dirname, '..', 'src', 'adapter');
+  const controllerContent = generateController(entityName, useCaseName);
+  writeFile(
+    path.join(
+      basePath,
+      'controllers',
+      `${lowercaseFirst(entityName)}Controller.ts`
+    ),
+    controllerContent
+  )
+
+  const repositoryContent = generatePrismaRepository(entityName);
+  writeFile(
+    path.join(
+      basePath,
+      'repositories',
+      `prisma${capitalize(entityName)}Repository.ts`
+    ),
+    repositoryContent
+  )
+}
+
+async function generateInfrastructureLayer() {
+  const { entityName } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'entityName',
+      message: 'エンティティ名を入力してください',
+    },
+  ]);
+  const basePath = path.join(__dirname, '..', 'src', 'infrastructure');
+  const routerContent = generateRouter(entityName);
+  writeFile(
+    path.join(basePath, 'web', 'routers', `${lowercaseFirst(entityName)}Router.ts`),
+    routerContent
+  )
+}
+
 async function main() {
   const layers = [
     'Entity',
@@ -103,10 +167,9 @@ async function main() {
   } else if (layer === 'UseCase') {
     await generateUseCaseLayer()
   } else if (layer === 'Interface adapter') {
-    console.log('Interface adapter')
+    await generateInterfaceAdapterLayer()
   } else if (layer === 'Framework & driver') {
-    console.log('Framework & driver')
+    await generateInfrastructureLayer()
   }
 }
-
 main()
