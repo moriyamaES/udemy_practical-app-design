@@ -10,14 +10,17 @@ export class UserController {
 
   async createUser(req: Request, res: Response): Promise<void> {
     try {
-      const requestDto: CreateUserRequestDto = {}
+      const requestDto: CreateUserRequestDto = {
+        email: req.body.email,
+      
+      }
       const user = await this.createUserUseCase.execute(requestDto);
   
       // Add response status code
-      res.status().json(user);
+      res.status(201).json(user);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ error: '' });
+      res.status(500).json({ error: 'ユーザの作成に失敗しました' });
     }
   }
 }
