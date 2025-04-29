@@ -24,6 +24,12 @@ export class Loan {
   get returnDate(): Date | null {
     return this._returnDate;
   }
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+  get updatedAt(): Date {
+    return this._updatedAt;
+  }
   return() {
     if (this.returnDate)
       throw new Error('この書籍は返却済です')
