@@ -14,12 +14,15 @@ import { loanRoutes } from './routers/loanRouter';
 import { LoanController } from '../../adapter/controllers/loanController';
 import { PrismaLoanRepository } from '../../adapter/repositories/prismaLoanRepository';
 import { LoanBookUseCase } from '../../application/useCases/loan/loanBookUseCase';
+import { PrismaTransactionManager } from '../../adapter/utils/prismaTransactionManager';
+
 
 const app = express();
 app.use(express.json());
 
 const prisma = new PrismaClient()
 const uuidGenerator = new UuidGenerator()
+const transactionManager = new PrismaTransactionManager(prisma)
 
 const bookRepository = new PrismaBookRepository(prisma)
 const addBookUseCase = new AddBookUseCase(bookRepository, uuidGenerator)
@@ -31,7 +34,12 @@ const createUserUseCase = new CreateUserUseCase(userRepository, uuidGenerator)
 const userController = new UserController(createUserUseCase)
 
 const loanRepository = new PrismaLoanRepository(prisma)
-const loanBookUseCase = new LoanBookUseCase(loanRepository, bookRepository, uuidGenerator)
+const loanBookUseCase = new LoanBookUseCase(
+  loanRepository,
+  bookRepository,
+  uuidGenerator,
+  transactionManager,
+)
 const loanController = new LoanController(loanBookUseCase)
 
 app.use('/books', bookRoutes(bookController))
