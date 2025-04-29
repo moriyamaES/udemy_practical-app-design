@@ -6,9 +6,10 @@ export class PrismaLoanRepository implements LoanRepositoryInterface {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(loan: Loan): Promise<Loan> {
+    throw new Error('エラー')
     const createdLoan = await this.prisma.loan.create({
       data: {
-        id: loan.id,
+        id: loan.id,  
         bookId: loan.bookId, 
         userId: loan.userId,
         loanDate: loan.loanDate,

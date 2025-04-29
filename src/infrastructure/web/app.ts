@@ -10,6 +10,10 @@ import { PrismaUserRepository } from '../../adapter/repositories/prismaUserRepos
 import { CreateUserUseCase } from '../../application/useCases/user/createUserUseCase';
 import { UserController } from '../../adapter/controllers/userController';
 import { userRoutes } from './routers/userRouter';
+import { loanRoutes } from './routers/loanRouter';
+import { LoanController } from '../../adapter/controllers/loanController';
+import { PrismaLoanRepository } from '../../adapter/repositories/prismaLoanRepository';
+import { LoanBookUseCase } from '../../application/useCases/loan/loanBookUseCase';
 
 const app = express();
 app.use(express.json());
@@ -26,8 +30,13 @@ const userRepository = new PrismaUserRepository(prisma)
 const createUserUseCase = new CreateUserUseCase(userRepository, uuidGenerator)
 const userController = new UserController(createUserUseCase)
 
+const loanRepository = new PrismaLoanRepository(prisma)
+const loanBookUseCase = new LoanBookUseCase(loanRepository, bookRepository, uuidGenerator)
+const loanController = new LoanController(loanBookUseCase)
+
 app.use('/books', bookRoutes(bookController))
 app.use('/users', userRoutes(userController))
+app.use('/loans', loanRoutes(loanController))
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
