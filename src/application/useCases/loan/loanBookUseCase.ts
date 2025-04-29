@@ -20,7 +20,7 @@ export class LoanBookUseCase implements LoanBookUseCaseInterface {
       const book = await this.bookRepository.findById(requestDto.bookId, ctx)
       if (!book)
         throw new Error('書籍が存在しません')
-      book.Loan()
+      book.loan()
   
       const loans = await this.loanRepository.findByUserId(requestDto.userId, ctx)
       if (loans.filter(loan => loan.returnDate === null).length >= 5)

@@ -23,14 +23,14 @@ export class Book {
     return this._updatedAt;
   }
 
-  Loan() { 
+  loan() { 
     if (!this._isAvailable) {
       throw new Error('この本は既に貸出されています');
     }
     this._isAvailable = false;
   }
 
-  Return() {  
+  return() {  
     if (this._isAvailable) {
       throw new Error('この本は既に返却されています');
     }
